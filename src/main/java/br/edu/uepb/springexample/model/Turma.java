@@ -1,12 +1,12 @@
-package br.edu.uepb.springexample;
+package br.edu.uepb.springexample.model;
 
-public class Aluno {
+public class Turma {
 	private long id;
 	private String nome;
-	private String curso;
+	private String turno;
 	
-	public Aluno() { }
-	
+	public Turma() {  }
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -20,10 +20,10 @@ public class Aluno {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Aluno)) {
+		if (!(obj instanceof Turma)) {
 			return false;
 		}
-		Aluno other = (Aluno) obj;
+		Turma other = (Turma) obj;
 		if (id != other.id) {
 			return false;
 		}
@@ -59,17 +59,17 @@ public class Aluno {
 	}
 
 	/**
-	 * @return the curso
+	 * @return the turno
 	 */
-	public String getCurso() {
-		return curso;
+	public String getTurno() {
+		return turno;
 	}
 
 	/**
-	 * @param curso the curso to set
+	 * @param turno the turno to set
 	 */
-	public void setCurso(String curso) {
-		this.curso = curso;
+	public void setTurno(String turno) {
+		this.turno = turno;
 	}
 	
 	

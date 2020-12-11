@@ -1,5 +1,5 @@
 
-package br.edu.uepb.springexample;
+package br.edu.uepb.springexample.resource;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import br.edu.uepb.springexample.model.Aluno;
+import br.edu.uepb.springexample.model.AuthToken;
+import br.edu.uepb.springexample.repository.AlunoRepository;
 
 // Hosted at the URI path "/api/alunos"
 @RestController
@@ -29,6 +33,19 @@ public class AlunoResource {
     public ResponseEntity<Aluno> createAluno(@RequestBody Aluno aluno) {
     	alunoRepository.create(aluno);
     	return new ResponseEntity<Aluno>(aluno, HttpStatus.CREATED);
+    }
+    
+    @PostMapping("/login")
+    public ResponseEntity<AuthToken> login(@RequestBody String nome, @RequestBody String senha) {
+    	try {
+        	Aluno a = alunoRepository.getByAuth(nome, senha);
+        	if(a == null)
+        		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos.");
+        	AuthToken tk = new AuthToken("");
+        	return new ResponseEntity<AuthToken>(tk, HttpStatus.OK);
+    	}catch(Exception e) {
+    		throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
     }
     
     @GetMapping("{id}")

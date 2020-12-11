@@ -1,8 +1,10 @@
-package br.edu.uepb.springexample;
+package br.edu.uepb.springexample.repository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import br.edu.uepb.springexample.model.Turma;
 
 public class TurmaRepository {
 	

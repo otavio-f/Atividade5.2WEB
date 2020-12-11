@@ -1,8 +1,10 @@
-package br.edu.uepb.springexample;
+package br.edu.uepb.springexample.repository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import br.edu.uepb.springexample.model.Aluno;
 
 public class AlunoRepository {
 	
@@ -34,6 +36,13 @@ public class AlunoRepository {
 	public Aluno getById(long id) {
 		for(Aluno a: alunos)
 			if(a.getId()==id)
+				return a;
+		return null;
+	}
+	
+	public Aluno getByAuth(String nome, String senha) {
+		for(Aluno a: alunos)
+			if(a.getNome().equals(nome) && a.getSenha().equals(senha))
 				return a;
 		return null;
 	}
