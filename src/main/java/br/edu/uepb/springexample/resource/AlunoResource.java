@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import br.edu.uepb.springexample.model.Aluno;
 import br.edu.uepb.springexample.model.AuthToken;
 import br.edu.uepb.springexample.repository.AlunoRepository;
-import br.edu.uepb.springexample.repository.AlunoRepositoryOLD;
 
 // Hosted at the URI path "/api/alunos"
 @RestController
