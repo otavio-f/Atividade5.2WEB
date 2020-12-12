@@ -1,27 +1,10 @@
-package br.edu.uepb.springexample.model;
+package br.edu.uepb.springexample.DTO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table
-public class Usuario {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
-	
-	@Column(unique=true)
+public class UsuarioDTO {
 	private String username;
-	
-	@Column
 	private String password;
 	
-	public Usuario() { }
+	public UsuarioDTO() { }
 
 	/**
 	 * @return the username
@@ -49,8 +32,5 @@ public class Usuario {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	
-	
-
+	}	
 }

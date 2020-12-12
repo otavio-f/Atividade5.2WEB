@@ -21,9 +21,6 @@ public class Aluno {
 	@Column(name="curso")
 	private String curso;
 	
-	@Column(name="senha")
-	private String senha;
-	
 	public Aluno() { }
 	
 	@Override
@@ -89,21 +86,6 @@ public class Aluno {
 	 */
 	public void setCurso(String curso) {
 		this.curso = curso;
-	}
-
-	/**
-	 * @return the senha
-	 */
-	public String getSenha() {
-		return senha;
-	}
-
-	/**
-	 * @param senha the senha to set
-	 */
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	
+	}	
 	
 }
