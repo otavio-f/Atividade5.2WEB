@@ -1,6 +1,9 @@
 
 package br.edu.uepb.springexample.resource;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,29 +19,31 @@ import org.springframework.web.server.ResponseStatusException;
 import br.edu.uepb.springexample.model.Aluno;
 import br.edu.uepb.springexample.model.AuthToken;
 import br.edu.uepb.springexample.repository.AlunoRepository;
+import br.edu.uepb.springexample.repository.AlunoRepositoryOLD;
 
 // Hosted at the URI path "/api/alunos"
 @RestController
 @RequestMapping("/api/alunos")
 public class AlunoResource {
 	
-	private static AlunoRepository alunoRepository = new AlunoRepository();
+	@Autowired
+	private AlunoRepository alunoRepository;
     
     @GetMapping
     public Iterable<Aluno> getAlunos() {
-    	return alunoRepository.getAll();
+    	return alunoRepository.findAll();
     }
     
     @PostMapping
     public ResponseEntity<Aluno> createAluno(@RequestBody Aluno aluno) {
-    	alunoRepository.create(aluno);
+    	alunoRepository.save(aluno);
     	return new ResponseEntity<Aluno>(aluno, HttpStatus.CREATED);
     }
     
     @PostMapping("/login")
     public ResponseEntity<AuthToken> login(@RequestBody String nome, @RequestBody String senha) {
     	try {
-        	Aluno a = alunoRepository.getByAuth(nome, senha);
+        	Aluno a = null;// = alunoRepository.getByAuth(nome, senha);
         	if(a == null)
         		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos.");
         	AuthToken tk = new AuthToken("");
@@ -50,22 +55,22 @@ public class AlunoResource {
     
     @GetMapping("{id}")
     public ResponseEntity<Aluno> getAlunoById(@PathVariable("id") long id) {
-    	Aluno a = alunoRepository.getById(id);
-    	if(a == null)
+    	Optional<Aluno> a = alunoRepository.findById(id);
+    	if(a.isEmpty())
     		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    	return new ResponseEntity<Aluno>(a, HttpStatus.OK);
+    	return new ResponseEntity<Aluno>(a.get(), HttpStatus.OK);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Aluno> editAluno(@PathVariable("id") long id, @RequestBody Aluno aluno) {
-    	Aluno a = alunoRepository.getById(id);
-    	if(a == null) {//Guia diz que deve criar caso n exista
-    		alunoRepository.create(aluno);
+    	Optional<Aluno> a = alunoRepository.findById(id);
+    	if(a.isEmpty()) {//Guia diz que deve criar caso n exista
+    		alunoRepository.save(aluno);
     		return new ResponseEntity<Aluno>(aluno, HttpStatus.CREATED);
     	}
     	try {
     		aluno.setId(id);
-    		alunoRepository.edit(aluno);
+    		alunoRepository.save(aluno);
     		return new ResponseEntity<Aluno>(aluno, HttpStatus.OK);
     	} catch(Exception e) {
     		throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -74,11 +79,11 @@ public class AlunoResource {
     
     @DeleteMapping("{id}")
     public void deleteAluno(@PathVariable("id") long id) {
-    	Aluno a = alunoRepository.getById(id);
-    	if(a == null)
+    	Optional<Aluno> a = alunoRepository.findById(id);
+    	if(a.isEmpty())
     		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     	try {
-    		alunoRepository.delete(a);
+    		alunoRepository.delete(a.get());
     	} catch(Exception e) {
     		throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     	}
